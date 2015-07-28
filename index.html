@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
-    <meta charset="utf-8"> it
+    <meta charset="utf-8"> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -22,83 +22,26 @@
 <body>
 
 <!-- Static navbar -->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">API Examples</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="../navbar/">Default</a></li>
-                <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
-                <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</nav>
 
-
-<div class="container">
-
-    <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <h1>KC Brigade API Example</h1>
-
-        <p>Open up your debuger and it's console. Then refreash this page.
-        </p>
-    </div>
-
-</div>
 <!-- /container -->
 
 <div class="container">
     <!-- Example row of columns -->
     <div class="row">
-        <div class="col-md-6">
-            <h2>311</h2>
+        <div class="col-md-12">
+            <h2>Property Violations past 7 days by Neighborhood, Date, Address</h2>
             <table id="cases" class="table table-striped">
                 <thead>
                 <tr>
+                    <th>Neighborhood - Date / Address</th>
+                    <th>Violation</th>
+                    <th>Closed</th>
                     <th>Case ID</th>
-                    <th>Address</th>
-                    <th>Department</th>
-                    <th>Request Type</th>
-                    <th>Status</th>
+                    <th>KIVA PIN</th>
                 </tr>
                 </thead>
                 <tbody>
                 </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <h2>Google Spread Sheet</h2>
-
-            <table id="projects" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Title/Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Organization</th>
-                    <th>Neighborhood(s)</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-
             </table>
         </div>
     </div>

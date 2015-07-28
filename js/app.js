@@ -18,11 +18,12 @@ var d = new Date();
 var month = d.getMonth() + 1;
 var day = 0;
 if (d.getHours() < 7) {
-    day = d.getDate() - 2;
+    day = d.getDate() - 5; // 2;
 } else {
-    day = d.getDate() - 1;
+    day = d.getDate() - 5; // 1;
 }
 
+    day = d.getDate() - 8; // 1;
 var output = d.getFullYear() + '-' +
     (('' + month).length < 2 ? '0' : '') + month + '-' +
     (('' + day).length < 2 ? '0' : '') + day;
@@ -30,66 +31,66 @@ var yesterday = output + 'T00:00:00';
 
 // See http://dev.socrata.com/docs/queries.html on SoQL Clauses
 
-var request_311 = createCORSRequest("get", "http://data.kcmo.org/resource/7at3-sxhp.json?$where=creation_date='" + yesterday + "'");
-if (request_311) {
-    request_311.onload = function () {
-        var data = JSON.parse(request_311.responseText);
-        console.dir(data);
+var request_property_violations = createCORSRequest("get", "http://data.kcmo.org/resource/nhtf-e75a.json?$where=case_opened > '" + yesterday + "'"); // $order=neighborhood");
+if (request_property_violations) {
+    request_property_violations.onload = function () {
+        var data = JSON.parse(request_property_violations.responseText);
+data.sort(function (a, b) {
+  if (a.neighborhood > b.neighborhood) {
+    return 1;
+  }
+  if (a.neighborhood < b.neighborhood) {
+    return -1;
+  }
+  // a must be equal to b
+  return 0;
+});
+//        console.dir(data);
+
+	var last_neighborhood = '';
+        var last_opened = '';
+        var last_address = '';
+        var closed = '';
         for (var i in data) {
             var row = '';
+	    if ( last_neighborhood = '' 
+            || ( last_neighborhood != data[i]['neighborhood'] && last_opened != data[i]['case_opened'])) {
+               row += '<tr>';
+               row += '<td colspan=5><b>' + data[i]['neighborhood'] + '</b> - ';
+               row += data[i]['case_opened'].substring(0,10) + '</td>';
+               row += '</tr>';
+               $('#cases > tbody:last').append(row);
+               row = '';
+               last_neighborhood = data[i]['neighborhood'];
+               last_opened = data[i]['case_opened'];
+	    }
             row += '<tr>';
+	    if ( last_address == '' || last_address != data[i]['address'] ) {
+               row += '<td>&nbsp;&nbsp;&nbsp;&nbsp;' + data[i]['address'] + '</td>';
+               last_address = data[i]['address'];
+            } else {
+               row += '<td>&nbsp;&nbsp;</td>';
+//               row += '<td>x&nbsp;&nbsp;&nbsp;&nbsp;' + data[i]['address'] + '</td>';
+            }
+            row += '<td>' + data[i]['violation_description'] + '</td>';
+            closed = data[i]['case_closed'];
+console.log(closed);
+            if ( typeof closed == 'undefined') {
+		 closed = '' ; 
+            } else {
+                 closed = closed.substring(0,10);
+            }
+            row += '<td>' + closed + '</td>';
             row += '<td>' + data[i]['case_id'] + '</td>';
-            row += '<td>' + data[i]['street_address'] + '</td>';
-            row += '<td>' + data[i]['department'] + '</td>';
-            row += '<td>' + data[i]['request_type'] + '</td>';
-            row += '<td>' + data[i]['status'] + '</td>';
+            row += '<td>' + data[i]['pin'] + '</td>';
             row += '</tr>';
 
             $('#cases > tbody:last').append(row);
 
-            if (i > 10) break;
-
         }
     };
-    request_311.send();
+    request_property_violations.send();
 }
 
-
-// Get Google Spreadsheet data
-
-// https://docs.google.com/spreadsheets/d/1IFbDEk5cRKP3WuQX7gMl6XDxLYuVZ4eeq0XRluxqmEQ/edit#gid=669009687
-//                                        \________________________  _______________/
-//                                                                 \/
-//                                                                key passed to tabletop
-//                                                                to identify the spread sheet
-//  NOTE:  You have to publish the spread sheet from 
-//         the File menu of the spread sheet.
-
-// Please note that the column names in this spread sheet were defined by the Google Form that inserts data into it.
-
-
-Tabletop.init({                                             // Requires js/tabletop.js
-    key: '1IFbDEk5cRKP3WuQX7gMl6XDxLYuVZ4eeq0XRluxqmEQ',
-    callback: function (data, tabletop) {
-        console.dir(data);
-        for (var i in data) {
-            var row = '';
-            row += '<tr>';
-            row += '<td>' + data[i]['1. Project Title/Name'] + '</td>';
-            row += '<td>' + data[i]['3. Project type'] + '</td>';
-            row += '<td>' + data[i]['2. Project description'] + '</td>';
-            row += '<td>' + data[i]['17. Organization name'] + '</td>';
-            row += '<td>' + data[i]['10. For area-wide projects, list the neighborhood(s) in which this project occurs.'] + '</td>';
-            row += '</tr>';
-
-            $('#projects > tbody:last').append(row);
-
-            if (i > 10) break;
-
-        }
-    },
-    orderby: '3. Project type',
-    simpleSheet: true
-});
 
 
