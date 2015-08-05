@@ -15,15 +15,10 @@ function createCORSRequest(method, url) {
 
 
 var d = new Date();
+d.setDate(d.getDate()-8);		// Past 7 days
 var month = d.getMonth() + 1;
-var day = 0;
-if (d.getHours() < 7) {
-    day = d.getDate() - 5; // 2;
-} else {
-    day = d.getDate() - 5; // 1;
-}
+day = d.getDate();
 
-    day = d.getDate() - 8; // 1;
 var output = d.getFullYear() + '-' +
     (('' + month).length < 2 ? '0' : '') + month + '-' +
     (('' + day).length < 2 ? '0' : '') + day;
